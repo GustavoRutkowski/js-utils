@@ -1,4 +1,5 @@
 import UIComponent from './UIComponent.js';
+import debounce from '../debounce.js';
 
 class SearchInput extends UIComponent {
     #data;
@@ -17,11 +18,6 @@ class SearchInput extends UIComponent {
     getValue() { return this.element.value; }
     getCurrentResult() { return this.#currentResult; }
 
-    #debounce(callbcakFn) {
-        // Criar o timer que reseta o debounce de tempos em tempos.
-        return callbcakFn;
-    }
-
     // Função padrão de busca
     #searchByArray(value) {
         return this.#data.filter(e => e === value);
@@ -35,7 +31,7 @@ class SearchInput extends UIComponent {
 
         if (this.#customClass) search.classList.add(this.#customClass);
 
-        search.addEventListener('input', this.#debounce(e => {
+        search.addEventListener('input', debounce(e => {
             // Chama a callback de busca
             this.#currentResult = this.#searchCallback(e.target.value);
         }));
